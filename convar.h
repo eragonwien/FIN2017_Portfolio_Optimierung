@@ -45,7 +45,7 @@ double covar(double* arr1, double* arr2, int len)
 	{
 		upper[i] = (arr1[i] - avg1) * (arr2[i] - avg2);
 	}
-	return sum(upper, len) / (len - 1);
+	return sum(upper, len) / len;
 }
 double** getCovMatrix(double** arr, int x, int y)
 {
