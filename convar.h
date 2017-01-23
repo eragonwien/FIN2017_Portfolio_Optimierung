@@ -1,7 +1,9 @@
+#ifndef CONVAR_H
+#define CONVAR_H
 #include <iostream>
 #include <random>
-#pragma once
 using namespace std;
+
 double sum(double*, int);
 double avgOfArray(double*, int);
 double covar(double*, double*, int);
@@ -61,4 +63,5 @@ double** getCovMatrix(double** arr, int x, int y)
 	}
 	return matrix;
 }
+#endif
 
