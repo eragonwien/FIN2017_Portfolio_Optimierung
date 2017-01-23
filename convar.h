@@ -5,6 +5,10 @@ using namespace std;
 double sum(double*, int);
 double avgOfArray(double*, int);
 double covar(double*, double*, int);
+/*
+y ist die Breite bzw. die Anzahl der Arrays
+x ist die Tiefe bzw. die Größe der einzelnen Array
+*/
 void showDoubleArray(double** arr, int x, int y)
 {
 	for (int i = 0; i < y; i++)
@@ -27,7 +31,6 @@ inline double sum(double * arr, int len)
 }
 double avgOfArray(double* arr, int len)
 {
-	
 	return sum(arr,len) / len;
 }
 double covar(double* arr1, double* arr2, int len)
