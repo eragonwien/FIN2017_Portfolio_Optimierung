@@ -2,7 +2,9 @@
 #include <string>
 #include <fstream>
 #include "convar.h"
+#include "optimize.h"
 using namespace std;
+void showVarianzAndRendit(double * gewicht_array, double** covmatrix, double** arr, int x, int y);
 int main() {
 	while (true)
 	{
@@ -61,7 +63,6 @@ int main() {
 						cout << "\nWrong Input Parameter. Using Default Parameter\n";
 						input = 5.0;
 					}
-					cout << endl;
 					data << input << "\t";
 				}
 				data << "\n";
@@ -91,15 +92,53 @@ int main() {
 					data >> arr[i][j];
 				}
 			}
-			cout<<"Origin\n";
-			showDoubleArray(arr,x,y);
-			cout<<"COV Matrix\n";
-			showDoubleArray(getCovMatrix(arr, x, y), y, y);
+			cout << "Origin\n";
+			showDoubleArray(arr, x, y);
+			cout << "COV Matrix\n";
+			double** covmatrix = getCovMatrix(arr, x, y);
+			showDoubleArray(covmatrix, y, y);
+			cout << endl;
+			
+			//Gewicht Abfrage
+			
+			double * gewicht_array = new double[y];
+			for (int i = 0; i < y; i++)
+			{
+				cout << "Gewicht von Asset " << i + 1 << " in Prozent : ";
+				cin >> gewicht_array[i];
+				gewicht_array[i] *= 0.01;
+				cout << endl;
+			}
+			
+			
+			showVarianzAndRendit(gewicht_array, covmatrix, arr, x, y);
+			cout << "(1) Maximal Rendit \noder\n(2) Minimale Risiko ? :";
+			int option;
+			try
+			{
+				cin >> option;
+				cout << endl;
+			}
+			catch (const std::exception&)
+			{
+				cout << "\nWrong Input Parameter. Using Default Parameter Maximale Rendit\n";
+				option = 1;
+			}
+			if (option == 1)
+			{
+				cout << "max Varianz ? ";
+				int maxVar;
+				cin >> maxVar;
+			}
+			else if (option == 2)
+			{
+				cout << "min Gewinn ? ";
+				int minGewinn;
+				cin >> minGewinn;
+			}
+			
+
 		}
-		
-
-
-
 		//End Program
 		cout << "Do you want to continue? (y/n)\n";
 		char end;
@@ -107,4 +146,35 @@ int main() {
 		if (end != 'y')break;
 	}
 	return 0;
+}
+void showVarianzAndRendit(double * gewicht_array, double** covmatrix, double** arr, int x, int y)
+{
+	/*
+	Varianz Anteil
+	*/
+	double * varianz_anteil = new double[y];
+	for (int i = 0; i < y; i++)
+	{
+		varianz_anteil[i] = gewicht_array[i] * summproduct(gewicht_array, covmatrix[i], y);
+		printf("Varianz Anteil Asset %i : %.2f\n", i + 1, varianz_anteil[i]);
+
+	}
+
+	printf("Gesamte Varianz : %.2f\n", sum(varianz_anteil, y));
+	/*
+	Rendite Anteil
+	*/
+	double * exp_rendit = new double[y];
+	for (int i = 0; i < y; i++)
+	{
+		exp_rendit[i] = avgOfArray(arr[i], x);
+	}
+	double * rendit_anteil = new double[y];
+	for (int i = 0; i < y; i++)
+	{
+		rendit_anteil[i] = gewicht_array[i] * 0.01 * exp_rendit[i];
+		printf("Rendite Anteil Asset %i : %.2f\n", i + 1, rendit_anteil[i]);
+	}
+
+	printf("Gesamte Rendite : %.2f\n", sum(rendit_anteil, y));
 }
