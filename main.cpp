@@ -97,7 +97,8 @@ int main() {
 				if (!data.good())
 				{
 					cout << "Error in data\n";
-					break;
+					i--;
+					continue;
 				}
 				data >> x;
 				arr[i] = new double[x];
