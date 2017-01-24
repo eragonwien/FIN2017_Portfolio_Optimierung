@@ -1,12 +1,19 @@
-#ifndef CONVAR_H
-#define CONVAR_H
 #include <iostream>
 #include <random>
+#ifndef CONVAR_H
+#define CONVAR_H
 using namespace std;
-
 double sum(double*, int);
 double avgOfArray(double*, int);
 double covar(double*, double*, int);
+void showArray(double* arr, int x)
+{
+	for (int j = 0; j < x; j++)
+	{
+		printf("%.2f\t", arr[j]);
+	}
+	cout << endl;
+}
 /*
 y ist die Breite bzw. die Anzahl der Arrays
 x ist die Tiefe bzw. die Größe der einzelnen Array
@@ -17,7 +24,7 @@ void showDoubleArray(double** arr, int x, int y)
 	{
 		for (int j = 0; j < x; j++)
 		{
-			printf("%.4f ", arr[i][j]);
+			printf("%.2f\t", arr[i][j]);
 		}
 		cout << endl;
 	}
@@ -58,7 +65,7 @@ double** getCovMatrix(double** arr, int x, int y)
 		matrix[i] = new double[y];
 		for (int j = 0; j < y; j++)
 		{
-			matrix[i][j] = covar(arr[i], arr[j], x);
+			matrix[i][j] = covar(arr[i], arr[j], x) * 0.01;
 		}
 	}
 	return matrix;
